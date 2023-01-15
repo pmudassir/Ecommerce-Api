@@ -1,12 +1,10 @@
 const router = require("express").Router();
 const dotenv = require("dotenv");
-const { calendarFormat } = require("moment/moment");
 dotenv.config();
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 //implementing stripe in node
+
 router.post("/payment",  (req, res) => {
-
-
     stripe.paymentIntents.create({
         amount: req.body.amount,
         currency: 'inr',
