@@ -4,7 +4,7 @@ const { verifyToken, verifyTokenAndAuth, verifyTokenAndAdmin } = require("./veri
 const router = require("express").Router();
 
 //CREATE 
-router.post("/", verifyToken, async (req,res) => {
+router.post("/", verifyToken, async (req, res) => {
     const newCart = new Cart(req.body);
 
     try {
@@ -16,52 +16,52 @@ router.post("/", verifyToken, async (req,res) => {
 });
 
 //UPDATE CART
-router.put("/:id", verifyTokenAndAuth, async (req,res) => {
-    try{
+router.put("/:id", verifyTokenAndAuth, async (req, res) => {
+    try {
         const updatedCart = await Cart.findByIdAndUpdate(
             req.params.id,
             {
                 $set: req.body
             },
-            {new: true}
+            { new: true }
         )
         res.status(200).json(updatedCart);
     }
-    catch(err){
+    catch (err) {
         res.status(err).json(err);
     }
 });
 
 //DELETE
-router.delete("/:id", verifyTokenAndAuth, async (req,res) => {
-    try{
-        await Cart.findByIdAndDelete(req.params.id) 
+router.delete("/:id", verifyTokenAndAuth, async (req, res) => {
+    try {
+        await Cart.findByIdAndDelete(req.params.id)
         res.status(200).json("Cart Item has been deleted");
     }
-    catch(err){
+    catch (err) {
         res.status(500).json(err)
     }
 });
 
 //GET USER CART
-router.get("/find/:userId", verifyTokenAndAuth, async (req,res) => {
-    try{
-        const cart = await Cart.findOne(req.params.userId)
+router.get("/find/:userId", verifyTokenAndAuth, async (req, res) => {
+    try {
+        const cart = await Cart.findOne({ userId: req.params.userId })
         res.status(200).json(cart)
     }
-    catch(err){
+    catch (err) {
         res.status(500).json(err)
-    } 
+    }
 });
 
 // //GET ALL ONLY FOR ADMIN
-router.get("/", verifyTokenAndAdmin, async (req,res) => {
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
     try {
         const cart = await Cart.find()
-        res.status(200).json(cart); 
+        res.status(200).json(cart);
     } catch (err) {
         res.status(500).json(err)
     }
 })
- 
+
 module.exports = router;

@@ -4,9 +4,9 @@ const verifyToken = (req,res,next) => {
     const authHeader = req.headers.token;
     if(authHeader){
         const token = authHeader.split(" ")[1];  //splitting the token with space eg:{Bearer (token No.)}.
-        jwt.verify(token, process.env.JWT_SEC, (err, foundUser) => {
+        jwt.verify(token, process.env.JWT_SEC, (err, user) => {
             if(err) res.status(401).json("Invalid Token!");
-            req.user = foundUser;
+            req.user = user;
             next();
         })
     }else{
